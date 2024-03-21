@@ -1,5 +1,5 @@
 import { computed } from "@preact/signals-react";
-import { store } from "../store/store";
+import { store } from "../../store/variant.1/store";
 
 const total = computed(() => {
   const { subStore1, subStore2 } = store;
@@ -11,7 +11,7 @@ const total = computed(() => {
 const text = store.subStore1.value.prop11;
 
 export const Header = () => {
-  console.log('HEADER');
+  console.log("HEADER");
 
   return (
     <>

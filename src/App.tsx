@@ -1,30 +1,18 @@
-import './App.css'
-import viteLogo from '/vite.svg'
-import { store } from './store/store';
-import { Header } from './components/header';
-import { LabelButton } from './components/label.button';
-import { Input } from './components/input';
-
-const { prop12 } = store.subStore1.value;
-const { prop22 } = store.subStore2.value;
+import "./App.css";
+import viteLogo from "/vite.svg";
+import Layout from "./components/variant.2/layout";
 
 function App() {
-  console.log('APP');
+  console.log("APP");
 
-  return  (
+  return (
     <>
       <a href="https://vitejs.dev" target="_blank">
         <img src={viteLogo} className="logo" alt="Vite logo" />
       </a>
-      <Header />
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <LabelButton data={prop12} title='first'/>
-        <LabelButton data={prop22} title='second'/>
-        <LabelButton data={prop12} title='third'/>
-      </div>
-      <Input />
+      <Layout />
     </>
   );
 }
 
-export default App
+export default App;
