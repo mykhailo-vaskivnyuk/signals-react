@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Store } from "./store.class";
 
-type TClearState<T> = {
-  [key in keyof T]: T[key] extends Store ? TClearState<T[key]> : T[key];
-}
-
-export class Store<
-  S extends Record<string, any> = Record<string, any>,
-  K extends readonly string[] = readonly string[],
-  CB extends (state: S) => void = (state: S) => void,
-  SS extends Map<K[number], CB> = Map<K[number], CB>,
+export class StoreSimple<
+S = any,
+K extends readonly string[] = readonly string[],
+CB extends (state: S) => void = (state: S) => void,
+SS extends Map<K[number], CB> = Map<K[number], CB>,
 > {
   state: S;
   #keys: K;
@@ -25,9 +22,6 @@ export class Store<
     this.state = state;
     this.#keys = keys;
     this.#onChange = onStateChange;
-    for (const value of Object.values(state)) {
-      if(value instanceof Store) value.setParent(this as any);
-    }
   }
 
   #_onStateChange() {
@@ -56,15 +50,10 @@ export class Store<
     return () => this.#subscribers.delete(key);
   }
 
-  setState(newState: Partial<S>) {
-    let changed = false;
-    for (const [key, value] of Object.entries(newState)) {
-      if (!(key in this.state)) continue;
-      if (this.state[key] === value) continue;
-      changed = true;
-      this.state[key as keyof S] = value;
-    }
-    if (changed) this.change();
+  setState(newState: S) {
+    if (this.state === newState) return;
+    this.state = newState;
+    this.change();
     return this;
   }
 
@@ -75,14 +64,6 @@ export class Store<
   }
 
   getState() {
-    const state = {} as TClearState<this>;
-    for (const [key, value] of Object.entries(this.state)) {
-      if (value instanceof Store) {
-        Object.assign(state, { [key]: value.getState() });
-      } else {
-        Object.assign(state, { [key]: value });
-      }
-    }
-    return state;
+    return this.state;
   }
 }
