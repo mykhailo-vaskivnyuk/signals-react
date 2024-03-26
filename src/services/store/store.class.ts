@@ -5,7 +5,7 @@ type TClearState<T> = {
 }
 
 export class Store<
-  S extends Record<string, any> = Record<string, any>,
+  S extends Record<string, any> = any,
   K extends readonly string[] = readonly string[],
   CB extends (state: S) => void = (state: S) => void,
   SS extends Map<K[number], CB> = Map<K[number], CB>,

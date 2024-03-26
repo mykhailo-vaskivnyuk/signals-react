@@ -6,7 +6,8 @@ export const useStore = (key: string, store: Store) => {
   const setState = useState({})[1];
 
   useEffect(() => {
-    return store.subscribe(key, () => setState({}))
+    const unsubscribe = store.subscribe(key, () => setState({}));
+    return () => void unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
